@@ -116,10 +116,10 @@ if [ $ERROR_COUNT -eq 0 ]; then
     echo "✓ Your system is ready to run LearnWeave!"
     echo ""
     echo "Next steps:"
-    echo "  1. Start ChromaDB:  ./scripts/start-chromadb.sh"
-    echo "  2. Start backend:   ./scripts/start-backend.sh"
-    echo "  3. Start frontend:  ./scripts/start-frontend.sh"
-    echo "  Or start all:       ./scripts/start-all.sh"
+    echo "  1. Setup database:  ./scripts/setup-db.sh"
+    echo "  2. Start ChromaDB:  ./scripts/start-chromadb.sh"
+    echo "  3. Start backend:   ./scripts/start-backend.sh"
+    echo "  4. Start frontend:  ./scripts/start-frontend.sh"
 else
     echo "Please fix the issues above before running LearnWeave."
 fi

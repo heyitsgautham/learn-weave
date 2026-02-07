@@ -90,7 +90,6 @@ backend/
 │   └── main.py           # Main application entry point
 ├── test/                 # Unit and integration tests
 ├── .env                  # Environment variable definitions (ignored by git)
-├── create_admin.py       # Script to create an initial admin user
 ├── Dockerfile            # Docker configuration for the application
 ├── docker-compose.yml    # Docker Compose configuration
 ├── requirements.txt      # Python dependencies
