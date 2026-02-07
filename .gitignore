@@ -6,7 +6,6 @@
 .env.production
 .env.staging
 *.env
-!.env.example
 
 # Python
 __pycache__/
@@ -237,52 +236,3 @@ backend/anki_output
 backend/flashcard_uploads
 backend/google-credentials.json
 google-credentials.json
-
-# AWS Credentials
-.aws/
-*.pem
-credentials
-#config
-
-# SSH Keys
-*.key
-*.ppk
-id_rsa*
-id_ed25519*
-id_ecdsa*
-id_dsa*
-
-# Certificates and Private Keys
-*.crt
-*.cer
-*.p12
-*.pfx
-*.keystore
-*.jks
-
-# Docker Secrets
-docker-compose.override.yml
-secrets/
-*.secret
-
-# API Keys and Tokens
-*_api_key*
-*_token*
-*_secret*
-*.token
-#auth.json
-firebase-adminsdk*.json
-
-# Database Connection Strings
-database.ini
-db.config
-
-# Supabase
-.supabase/
-
-# Cloud Provider Credentials
-gcloud-credentials.json
-azure-credentials.json
-service-account*.json
-!.env.example
-!*example*credentials*

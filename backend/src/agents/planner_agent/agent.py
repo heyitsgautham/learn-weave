@@ -18,7 +18,7 @@ class PlannerAgent(StructuredAgent):
         # Create the planner agent
         planner_agent = LlmAgent(
             name="planner_agent",
-            model="gemini-2.0-flash-exp",
+            model="gemini-3-flash-preview",
             description="Agent for planning Learning Paths and Courses",
             output_schema=LearningPath,
             instruction=load_instruction_from_file("planner_agent/instructions.txt"),
