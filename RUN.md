@@ -6,39 +6,65 @@
 3. Google credentials configured
 4. All Python & npm dependencies installed
 
+---
+
 ## 📝 How to Run the Project
 
-### 1️⃣ Start Backend (Terminal 1)
+### 🔥 Start Everything at Once
 ```bash
-cd /home/kinux/projects/LearnWeave/backend
-export PYTHONPATH=/home/kinux/projects/LearnWeave/backend
-python3 -m uvicorn src.main:app --reload --host 0.0.0.0 --port 8000
+./scripts/start-all.sh
 ```
+This starts **ChromaDB → Backend → Frontend** in order and waits for each to be ready.
 
-**Backend will be available at:**
+### Or Start Services Individually
+
+#### 1️⃣ Start ChromaDB
+```bash
+./scripts/start-chromadb.sh
+```
+- ChromaDB: http://localhost:8001
+- Heartbeat: http://localhost:8001/api/v1/heartbeat
+
+#### 2️⃣ Start Backend (Terminal 1)
+```bash
+./scripts/start-backend.sh
+```
 - API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+- Docs: http://localhost:8000/api/docs
+- ReDoc: http://localhost:8000/api/redoc
 
-### 2️⃣ Start Frontend (Terminal 2)
+> ⚠️ Requires `.env` file in `backend/`. Copy from `.env.example` if missing.
+
+#### 3️⃣ Start Frontend (Terminal 2)
 ```bash
-cd /home/kinux/projects/LearnWeave/frontend
-npm run dev
+./scripts/start-frontend.sh
 ```
+- App: http://localhost:3000
 
-**Frontend will be available at:** http://localhost:5173
+> ⚠️ Requires `node_modules/` in `frontend/`. Run `npm install` if missing.
 
-### 3️⃣ Create Admin User (Terminal 3)
+---
+
+### 4️⃣ Create Admin User (one-time)
 ```bash
-cd /home/kinux/projects/LearnWeave/backend
+cd backend
 python3 create_admin.py --username admin --email admin@learnweave.com --password admin123
 ```
 
-**Default Admin Credentials Created:**
+**Default Admin Credentials:**
 - Username: `admin`
 - Email: `admin@learnweave.com`
 - Password: `admin123`
 
 > ⚠️ **Important:** Change the admin password after first login!
+
+---
+
+## 🔍 Check Requirements
+```bash
+./scripts/check-requirements.sh
+```
+Verifies Python 3.12+, Node.js, MySQL, Docker, and npm are installed.
 
 ---
 
@@ -51,6 +77,13 @@ python3 create_admin.py --username admin --email admin@learnweave.com --password
 
 ---
 
+## 📦 Project Structure
+- **Backend**: FastAPI + MySQL + ChromaDB + Google Gemini AI
+- **Frontend**: React + Vite + Tailwind CSS
+- **Database**: MySQL (user data) + ChromaDB (vector embeddings)
+
+---
+
 ## 🐛 Troubleshooting
 
 ### If Backend Won't Start:
@@ -58,28 +91,21 @@ python3 create_admin.py --username admin --email admin@learnweave.com --password
 # Make sure ChromaDB is running
 sudo docker ps | grep chroma
 
-# If not running, start it:
-cd /home/kinux/projects/LearnWeave/backend
-sudo docker run -d --name learnweave-chromadb -p 8001:8000 chromadb/chroma:latest
+# If not running:
+./scripts/start-chromadb.sh
 
 # Check MySQL
+sudo systemctl start mysqld
 mysql -u learnweave_user -p learnweave_db
 ```
 
 ### If Frontend Won't Start:
 ```bash
-cd /home/kinux/projects/LearnWeave/frontend
+cd frontend
 rm -rf node_modules package-lock.json
 npm install
 npm run dev
 ```
-
----
-
-## 📦 Project Structure
-- **Backend**: FastAPI + MySQL + ChromaDB + Google Gemini AI
-- **Frontend**: React + Vite + Tailwind CSS
-- **Database**: MySQL (user data) + ChromaDB (vector embeddings)
 
 ---
 
@@ -91,7 +117,7 @@ npm run dev
 curl http://localhost:8000/
 
 # ChromaDB
-curl http://localhost:8001/api/v2/heartbeat
+curl http://localhost:8001/api/v1/heartbeat
 
 # MySQL
 mysql -u learnweave_user -ppassword -e "SHOW DATABASES;"
@@ -99,8 +125,29 @@ mysql -u learnweave_user -ppassword -e "SHOW DATABASES;"
 
 **Stop Services:**
 ```bash
-# Stop Docker ChromaDB
-sudo docker stop learnweave-chromadb
+# Stop all
+pkill -f 'uvicorn src.main:app'   # Backend
+pkill -f 'node.*vite'             # Frontend
+sudo docker stop learnweave-chromadb  # ChromaDB
 
-# Backend & Frontend: Press Ctrl+C in their terminals
+# Or press Ctrl+C in respective terminals
 ```
+
+**View Logs (when started via start-all.sh):**
+```bash
+tail -f /tmp/learnweave-backend.log   # Backend
+tail -f /tmp/learnweave-frontend.log  # Frontend
+sudo docker logs learnweave-chromadb -f   # ChromaDB
+```
+
+---
+
+## 📜 Available Scripts
+
+| Script | Description |
+|--------|-------------|
+| `./scripts/start-all.sh` | Start all services (ChromaDB + Backend + Frontend) |
+| `./scripts/start-backend.sh` | Start backend server only |
+| `./scripts/start-frontend.sh` | Start frontend dev server only |
+| `./scripts/start-chromadb.sh` | Start ChromaDB Docker container only |
+| `./scripts/check-requirements.sh` | Verify all dependencies are installed |
