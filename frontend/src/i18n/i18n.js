@@ -1,6 +1,5 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import LanguageDetector from 'i18next-browser-languagedetector';
 
 // Import language files
 
@@ -33,13 +32,13 @@ import enStatisticsPage from './locales/en/statisticsPage.json';
 const i18nInstance = i18n.createInstance();
 
 i18nInstance
-  .use(LanguageDetector)
   .use(initReactI18next)
   .init({
     // Configure namespaces
     defaultNS: 'common',
     ns: ['common', 'pricing'],
     defaultNS: 'common',
+    lng: 'en', // Lock to English
     fallbackLng: 'en',
     
     // Enable debug in development
@@ -81,11 +80,6 @@ i18nInstance
     
     interpolation: {
       escapeValue: false, // React already safes from XSS
-    },
-    
-    detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
     },
   });
 

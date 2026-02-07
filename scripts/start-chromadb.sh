@@ -9,7 +9,7 @@ echo "========================================"
 echo ""
 
 # Check if Docker is running
-if ! docker ps &> /dev/null; then
+if ! sudo docker ps &> /dev/null; then
     echo "✗ Docker is not running!"
     echo "  Start with: sudo systemctl start docker"
     exit 1
@@ -19,7 +19,7 @@ fi
 cd "$(dirname "$0")/../backend" || exit 1
 
 # Check if ChromaDB container is already running
-if docker ps --format '{{.Names}}' | grep -q "learnweave-chromadb"; then
+if sudo docker ps --format '{{.Names}}' | grep -q "learnweave-chromadb"; then
     echo "✓ ChromaDB is already running"
     echo ""
     echo "Services:"
@@ -39,8 +39,8 @@ if [ $? -eq 0 ]; then
     echo "  • ChromaDB:  http://localhost:8001"
     echo "  • Heartbeat: http://localhost:8001/api/v1/heartbeat"
     echo ""
-    echo "Check status: docker ps"
-    echo "View logs:    docker logs learnweave-chromadb -f"
+    echo "Check status: sudo docker ps"
+    echo "View logs:    sudo docker logs learnweave-chromadb -f"
     echo "Stop:         docker stop learnweave-chromadb"
 else
     echo ""

@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
 import { AuthProvider } from './contexts/AuthContext';
 import { ToolbarProvider } from './contexts/ToolbarContext';
-import { LanguageProvider } from './contexts/LanguageContext';
 import { PomodoroProvider } from './contexts/PomodoroContext';
 
 import './i18n/i18n';
@@ -71,11 +70,10 @@ function App() {
           },
         },
       }}>
-        <LanguageProvider>
-          <AuthProvider>
-            {/*<NotificationProvider>*/}
-              <ToolbarProvider>
-                <PomodoroProvider>
+        <AuthProvider>
+          {/*<NotificationProvider>*/}
+            <ToolbarProvider>
+              <PomodoroProvider>
                   <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                     <Routes>
                     {/* Public routes with MainLayout */}
@@ -121,7 +119,6 @@ function App() {
               </ToolbarProvider>
             {/*</NotificationProvider>*/}
           </AuthProvider>
-        </LanguageProvider>
       </MantineProvider>
     </ColorSchemeProvider>
   );

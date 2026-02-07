@@ -42,7 +42,6 @@ import { toast } from 'react-toastify';
 import { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconLanguage, IconSun, IconMoonStars } from '@tabler/icons-react';
-import LanguageSettingsCard from '../components/LanguageSettingsCard';
 import { Switch, useMantineColorScheme } from '@mantine/core';
 
 // Create styles for the SettingsPage components
@@ -470,8 +469,6 @@ function SettingsPage() {
               {t('general.saveButton', 'Save Changes')}
             </Button>          </form>
         </Card>
-
-        <LanguageSettingsCard className={classes.cardContainer} />
 
         <Card shadow="sm" padding="lg" radius="md" withBorder className={classes.cardContainer}>
           <Card.Section p="md" bg={theme.colorScheme === 'dark' ? theme.fn.rgba(theme.colors.orange[9], 0.2) : theme.colors.orange[0]}>

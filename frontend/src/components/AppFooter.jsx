@@ -1,5 +1,4 @@
 import { Text, Box } from '@mantine/core';
-import LanguageSelector from '../components/LanguageSelector'; // Import LanguageSelector
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -28,10 +27,6 @@ function AppFooter() {
         }`,
       })}
     >
-      {!isAuthenticated && (
-        <LanguageSelector />
-      )}
-      
       <Text size="sm" color="dimmed">
         {t('copyright', { year: currentYear, ns: 'footer' })} {' | '}
         <a href="/impressum" style={{ color: 'inherit', textDecoration: 'underline', margin: '0 8px' }}>{t('impressum', { ns: 'navigation' })}</a>

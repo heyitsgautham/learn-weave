@@ -242,7 +242,7 @@ google-credentials.json
 .aws/
 *.pem
 credentials
-config
+#config
 
 # SSH Keys
 *.key
@@ -270,7 +270,7 @@ secrets/
 *_token*
 *_secret*
 *.token
-auth.json
+#auth.json
 firebase-adminsdk*.json
 
 # Database Connection Strings
