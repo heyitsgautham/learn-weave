@@ -201,20 +201,22 @@ class AgentService:
             )
             logger.info("[%s] InfoAgent response: %s", task_id, info_response['title'])
 
-            # Get unsplash image url (optional - skip if fails)
-            image_url = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"  # Default placeholder
+            # Generate AI course cover image (optional - skip if fails)
+            image_url = "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"  # Default placeholder
             try:
                 image_response = await self.image_agent.run(
                     user_id=user_id,
                     state={},
-                    content=create_text_query(
-                        f"Title: {info_response['title']}, Description: {info_response['description']}")
+                    content="",
+                    image_type="course",
+                    title=info_response['title'],
+                    description=info_response['description'],
                 )
                 if image_response and image_response.get('url'):
                     image_url = image_response.get('url')
-                logger.info("[%s] Image URL retrieved: %s", task_id, image_url)
+                logger.info("[%s] Course cover image URL: %s", task_id, image_url)
             except Exception as e:
-                logger.warning("[%s] Failed to get image from Unsplash, using default image: %s", task_id, str(e))
+                logger.warning("[%s] Failed to generate course cover image, using default: %s", task_id, str(e))
 
             # Update course in database
             with get_db_context() as db:
@@ -307,19 +309,24 @@ class AgentService:
                     )
                     logger.info("[%s] Chapter %d: Coding agent completed", task_id, idx + 1)
 
-                    # Try to get image from image agent (optional)
-                    chapter_image_url = "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"  # Default placeholder
+                    # Generate AI chapter cover image (optional)
+                    chapter_image_url = "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"  # Default placeholder
                     try:
+                        chapter_content_summary = "\n".join(topic.get('content', [])[:5])
                         image_response = await self.image_agent.run(
                             user_id=user_id,
                             state={},
-                            content=self.query_service.get_explainer_image_query(user_id, course_id, idx)
+                            content=chapter_content_summary,
+                            image_type="chapter",
+                            chapter_caption=topic['caption'],
+                            chapter_content=chapter_content_summary,
+                            course_title=info_response.get('title', ''),
                         )
-                        if image_response and image_response.get('explanation'):
-                            chapter_image_url = image_response.get('explanation')
+                        if image_response and image_response.get('url'):
+                            chapter_image_url = image_response.get('url')
                         logger.info("[%s] Chapter %d image URL: %s", task_id, idx + 1, chapter_image_url)
                     except Exception as e:
-                        logger.warning("[%s] Failed to get image for chapter %d, using default image: %s", task_id, idx + 1, str(e))
+                        logger.warning("[%s] Failed to generate image for chapter %d, using default: %s", task_id, idx + 1, str(e))
 
                     summary = "\n".join(topic['content'][:3])
 

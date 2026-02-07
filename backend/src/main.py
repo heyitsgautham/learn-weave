@@ -38,6 +38,10 @@ user_model.Base.metadata.create_all(bind=engine)
 output_dir = Path("/tmp/anki_output") if os.path.exists("/tmp") else Path("./anki_output")
 output_dir.mkdir(exist_ok=True)
 
+# Create persistent directory for AI-generated course/chapter images
+generated_images_dir = Path(__file__).parent.parent / "generated_images"
+generated_images_dir.mkdir(parents=True, exist_ok=True)
+
 # Create the main app instance
 app = FastAPI(
     title="User Management API",
@@ -86,6 +90,9 @@ app.include_router(flashcard.router)
 
 # Mount static files for flashcard downloads
 app.mount("/output", StaticFiles(directory=str(output_dir)), name="output")
+
+# Mount static files for AI-generated course/chapter cover images
+app.mount("/generated_images", StaticFiles(directory=str(generated_images_dir)), name="generated_images")
 
 
 # The root path "/" is now outside the /api prefix

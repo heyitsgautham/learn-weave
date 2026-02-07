@@ -1,23 +1,83 @@
 # 🚀 LearnWeave - How to Run
 
-## ✅ What's Already Set Up
-1. MySQL database (learnweave_db, user: learnweave_user, password: password)
-2. ChromaDB running in Docker on port 8001
-3. Google credentials configured
-4. All Python & npm dependencies installed
+## 📦 Project Structure
+- **Backend**: FastAPI + MySQL + ChromaDB + Google Gemini AI
+- **Frontend**: React + Vite + Tailwind CSS
+- **Database**: MySQL (user data) + ChromaDB (vector embeddings)
 
 ---
 
-## 📝 How to Run the Project
+## 🔍 Step 0 — Check Requirements
+```bash
+./scripts/check-requirements.sh
+```
+Verifies **Python 3.12+**, **Node.js**, **MySQL**, **Docker**, and **npm** are installed.
 
-### 1️⃣ Start ChromaDB
+---
+
+## 📝 Step 1 — Configure Environment
+```bash
+cp backend/.env.example backend/.env
+```
+Edit `backend/.env` and fill in:
+- `SECRET_KEY` / `SESSION_SECRET_KEY` — generate with: `python3 -c "import secrets; print(secrets.token_urlsafe(32))"`
+- **Google Cloud credentials** — required for Gemini AI (see comments in `.env.example`)
+- DB credentials can stay at defaults for local dev
+
+---
+
+## 📥 Step 2 — Install Dependencies
+
+### Python (backend)
+
+> **Optional but recommended:** Use a virtual environment to isolate dependencies:
+> ```bash
+> cd backend
+> python3 -m venv venv
+> source venv/bin/activate   # On Linux/macOS
+> ```
+> After activating, all `pip install` and `python3` commands will use the venv.
+
+```bash
+cd backend
+pip install -r requirements.txt
+```
+
+### Node.js (frontend)
+```bash
+cd frontend
+npm install
+```
+
+---
+
+## 🐳 Step 3 — Start ChromaDB
 ```bash
 ./scripts/start-chromadb.sh
 ```
 - ChromaDB: http://localhost:8001
 - Heartbeat: http://localhost:8001/api/v1/heartbeat
 
-#### 2️⃣ Start Backend (Terminal 1)
+---
+
+## 🗄️ Step 4 — Setup Database
+```bash
+./scripts/setup-db.sh
+```
+This single script handles **everything** database-related:
+1. Starts MySQL if not running
+2. Creates the database & user
+3. Creates all tables (via SQLAlchemy models)
+4. Creates the admin user
+
+**Default Admin Credentials:**
+- Username: `admin` · Email: `admin@learnweave.local` · Password: `admin123`
+
+> ⚠️ **Change the admin password after first login!**
+
+---
+
+## ▶️ Step 5 — Start Backend (Terminal 1)
 ```bash
 ./scripts/start-backend.sh
 ```
@@ -25,54 +85,15 @@
 - Docs: http://localhost:8000/api/docs
 - ReDoc: http://localhost:8000/api/redoc
 
-> ⚠️ Requires `.env` file in `backend/`. Copy from `.env.example` if missing.
+> If using a venv, make sure it's activated before running.
 
-#### 3️⃣ Start Frontend (Terminal 2)
+---
+
+## ▶️ Step 6 — Start Frontend (Terminal 2)
 ```bash
 ./scripts/start-frontend.sh
 ```
 - App: http://localhost:3000
-
-> ⚠️ Requires `node_modules/` in `frontend/`. Run `npm install` if missing.
-
----
-
-### 4️⃣ Create Admin User (one-time)
-```bash
-cd backend
-python3 create_admin.py --username admin --email admin@learnweave.com --password admin123
-```
-
-**Default Admin Credentials:**
-- Username: `admin`
-- Email: `admin@learnweave.com`
-- Password: `admin123`
-
-> ⚠️ **Important:** Change the admin password after first login!
-
----
-
-## 🔍 Check Requirements
-```bash
-./scripts/check-requirements.sh
-```
-Verifies Python 3.12+, Node.js, MySQL, Docker, and npm are installed.
-
----
-
-## 🔑 API Keys Used
-| Key | Status | Notes |
-|-----|--------|-------|
-| Google Cloud | ✅ | Set via `$GOOGLE_APPLICATION_CREDENTIALS` |
-| MySQL | ✅ | localhost:3306, user: learnweave_user |
-| ChromaDB | ✅ | Docker on port 8001 |
-
----
-
-## 📦 Project Structure
-- **Backend**: FastAPI + MySQL + ChromaDB + Google Gemini AI
-- **Frontend**: React + Vite + Tailwind CSS
-- **Database**: MySQL (user data) + ChromaDB (vector embeddings)
 
 ---
 
@@ -136,7 +157,8 @@ sudo docker logs learnweave-chromadb -f   # ChromaDB
 
 | Script | Description |
 |--------|-------------|
+| `./scripts/check-requirements.sh` | Verify all dependencies are installed |
+| `./scripts/setup-db.sh` | Setup MySQL database, tables & admin user |
+| `./scripts/start-chromadb.sh` | Start ChromaDB Docker container |
 | `./scripts/start-backend.sh` | Start backend server |
 | `./scripts/start-frontend.sh` | Start frontend dev server |
-| `./scripts/start-chromadb.sh` | Start ChromaDB Docker container |
-| `./scripts/check-requirements.sh` | Verify all dependencies are installed |

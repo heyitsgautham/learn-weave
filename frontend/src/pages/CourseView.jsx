@@ -253,7 +253,7 @@ function CourseView() {
               width: '50%',
               height: '100%',
               opacity: 0.05,
-              backgroundImage: (course && course.image_url) ? `url("${course.image_url}")` : 'url("https://cdn-icons-png.flaticon.com/512/8136/8136031.png")',
+              backgroundImage: (course && course.image_url) ? `url("${course.image_url}")` : 'none',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               [theme.fn.smallerThan('md')]: {
@@ -490,7 +490,7 @@ function CourseView() {
 
               <Grid.Col md={5} sx={{ position: 'relative' }}>
                 <Image
-                  src={course.image_url || "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"}
+                  src={course.image_url || "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"}
                   height={400}
                   sx={{
                     objectFit: 'cover',
@@ -616,7 +616,7 @@ function CourseView() {
 
                   <Card.Section sx={{ position: 'relative' }}>
                     <Image
-                      src={chapter.image_url || "https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"}
+                      src={chapter.image_url || "https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"}
                       alt={chapter.caption || t('chapters.defaultCaptionText', { chapterNumber: index + 1 })}
                       height={180}
                       sx={{
@@ -764,7 +764,7 @@ function CourseView() {
                     <Card.Section>
                       <Box sx={{ position: 'relative' }}>
                         <Image
-                          src="https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image.png"
+                          src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=800&q=80"
                           height={180}
                           alt={t('creation.upcomingChapterAlt', { chapterNumber: placeholderIndex + 1 })}
                           sx={{ filter: 'blur(3px) grayscale(50%)' }}
